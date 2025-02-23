@@ -1,4 +1,4 @@
-const CategoriaVeiculo = require('../models/categoriaVeiculo');
+const CategoriaVeiculo = require('../models/categoriasVeiculo');
 
 const createCategoriaVeiculo = async (data) => {
   return await CategoriaVeiculo.create(data);
