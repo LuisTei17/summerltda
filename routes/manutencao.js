@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const veiculoService = require('../services/veiculoService');
+const manutencaoService = require('../services/manutencaoService');
 
-// CRUD routes for Veiculo
+// CRUD routes for Manutencao
 router.post('/', async (req, res) => {
   try {
-    const veiculo = await veiculoService.createVeiculo(req.body);
-    res.status(201).json(veiculo);
+    const manutencao = await manutencaoService.createManutencao(req.body);
+    res.status(201).json(manutencao);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -14,8 +14,8 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const veiculos = await veiculoService.getAllVeiculos();
-    res.json(veiculos);
+    const manutencoes = await manutencaoService.getAllManutencoes();
+    res.json(manutencoes);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -23,11 +23,11 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const veiculo = await veiculoService.getVeiculoById(req.params.id);
-    if (veiculo) {
-      res.json(veiculo);
+    const manutencao = await manutencaoService.getManutencaoById(req.params.id);
+    if (manutencao) {
+      res.json(manutencao);
     } else {
-      res.status(404).json({ error: 'Veiculo not found' });
+      res.status(404).json({ error: 'Manutencao not found' });
     }
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -36,11 +36,11 @@ router.get('/:id', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   try {
-    const veiculo = await veiculoService.updateVeiculo(req.params.id, req.body);
-    if (veiculo) {
-      res.json(veiculo);
+    const manutencao = await manutencaoService.updateManutencao(req.params.id, req.body);
+    if (manutencao) {
+      res.json(manutencao);
     } else {
-      res.status(404).json({ error: 'Veiculo not found' });
+      res.status(404).json({ error: 'Manutencao not found' });
     }
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -49,11 +49,11 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try {
-    const success = await veiculoService.deleteVeiculo(req.params.id);
+    const success = await manutencaoService.deleteManutencao(req.params.id);
     if (success) {
       res.status(204).send();
     } else {
-      res.status(404).json({ error: 'Veiculo not found' });
+      res.status(404).json({ error: 'Manutencao not found' });
     }
   } catch (error) {
     res.status(400).json({ error: error.message });

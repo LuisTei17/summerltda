@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const CategoriaVeiculo = require('../models/categoriasVeiculo');
+const categoriaVeiculoService = require('../services/categoriaVeiculoService');
 
 // CRUD routes for CategoriaVeiculo
 router.post('/', async (req, res) => {
   try {
-    const categoria = await CategoriaVeiculo.create(req.body);
+    const categoria = await categoriaVeiculoService.createCategoriaVeiculo(req.body);
     res.status(201).json(categoria);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const categorias = await CategoriaVeiculo.findAll();
+    const categorias = await categoriaVeiculoService.getAllCategoriasVeiculo();
     res.json(categorias);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const categoria = await CategoriaVeiculo.findByPk(req.params.id);
+    const categoria = await categoriaVeiculoService.getCategoriaVeiculoById(req.params.id);
     if (categoria) {
       res.json(categoria);
     } else {
@@ -36,9 +36,8 @@ router.get('/:id', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   try {
-    const categoria = await CategoriaVeiculo.findByPk(req.params.id);
+    const categoria = await categoriaVeiculoService.updateCategoriaVeiculo(req.params.id, req.body);
     if (categoria) {
-      await categoria.update(req.body);
       res.json(categoria);
     } else {
       res.status(404).json({ error: 'Categoria not found' });
@@ -50,9 +49,8 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try {
-    const categoria = await CategoriaVeiculo.findByPk(req.params.id);
-    if (categoria) {
-      await categoria.destroy();
+    const success = await categoriaVeiculoService.deleteCategoriaVeiculo(req.params.id);
+    if (success) {
       res.status(204).send();
     } else {
       res.status(404).json({ error: 'Categoria not found' });

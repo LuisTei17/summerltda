@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const Loja = require('../models/loja');
+const lojaService = require('../services/lojaService');
 
 // CRUD routes for Loja
 router.post('/', async (req, res) => {
   try {
-    const loja = await Loja.create(req.body);
+    const loja = await lojaService.createLoja(req.body);
     res.status(201).json(loja);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const lojas = await Loja.findAll();
+    const lojas = await lojaService.getAllLojas();
     res.json(lojas);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const loja = await Loja.findByPk(req.params.id);
+    const loja = await lojaService.getLojaById(req.params.id);
     if (loja) {
       res.json(loja);
     } else {
@@ -36,9 +36,8 @@ router.get('/:id', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   try {
-    const loja = await Loja.findByPk(req.params.id);
+    const loja = await lojaService.updateLoja(req.params.id, req.body);
     if (loja) {
-      await loja.update(req.body);
       res.json(loja);
     } else {
       res.status(404).json({ error: 'Loja not found' });
@@ -50,9 +49,8 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try {
-    const loja = await Loja.findByPk(req.params.id);
-    if (loja) {
-      await loja.destroy();
+    const success = await lojaService.deleteLoja(req.params.id);
+    if (success) {
       res.status(204).send();
     } else {
       res.status(404).json({ error: 'Loja not found' });
